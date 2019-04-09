@@ -14,12 +14,29 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace MissionControl {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
+        }
+
+        private void RedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+
+        }
+
+        private void GreenSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+
+        }
+
+        private void BlueSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+
+        }
+
+        private void LedPositionSlider_HigherValueChanged(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void LedPositionSlider_LowerValueChanged(object sender, RoutedEventArgs e) {
+
         }
     }
 }
