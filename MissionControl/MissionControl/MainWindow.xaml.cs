@@ -47,15 +47,15 @@ namespace MissionControl {
 
         private void ChangeLed_Click(object sender, RoutedEventArgs e) {
             // Set LEDs
-            var red = (int)RedSlider.Value;
-            var green = (int)GreenSlider.Value;
-            var blue = (int)BlueSlider.Value;
+            uint red = (uint)RedSlider.Value;
+            uint green = (uint)GreenSlider.Value;
+            uint blue = (uint)BlueSlider.Value;
             var LEDCount = 136;
             // Map Lower/higher range to ASCII byte
-            int lower = (int)((Double.Parse(lbox.Text) / (Double)LEDCount) * 127.0);
-            int higher = (int)((Double.Parse(lbox.Text) / (Double)LEDCount) * 127.0);
+            uint lower = uint.Parse(lbox.Text);
+            uint higher = uint.Parse(hbox.Text);
             // Create Serial Command as a String
-            string SerialCommand = (char)(byte)red + "" + (char)(byte)green + "" + (char)(byte)blue + "" + (char)(byte)lower + "" + (char)(byte)higher + "\n";
+            string SerialCommand = red + "," + green + "," + blue + "," + lower + "," + higher + "\n";
             
             // TODO: Fix Int -> Byte
 
