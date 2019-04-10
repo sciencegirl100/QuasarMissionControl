@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MissionControl {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
+            RedSlider.Value = 127;
+            GreenSlider.Value = 127;
+            BlueSlider.Value = 127;
             ColorChange();
+            UpdateSerialSelector();
         }
 
         /* TODO:
@@ -61,10 +53,22 @@ namespace MissionControl {
             // MessageBox.Show("Red: " + (char)(byte)red + "\n Green: " + (char)(byte)green + "\n Blue: " + (char)(byte)blue);
             // MessageBox.Show(SerialCommand);
 
+            // TODO: Pull from Selector Box and push to that serial port
+            // https://www.c-sharpcorner.com/UploadFile/eclipsed4utoo/communicating-with-serial-port-in-C-Sharp/
+            // https://docs.microsoft.com/en-us/dotnet/api/system.io.ports.serialport?view=netframework-4.7.2
+
+        }
+        private void UpdateSerialSelector() {
+            // TODO: get list of serial ports and dump to combo-box
+            // https://docs.microsoft.com/en-us/dotnet/api/system.io.ports.serialport.getportnames?view=netframework-4.7.2
         }
 
         private int Map(int value, int fromSource, int toSource, int fromTarget, int toTarget) {
             return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            UpdateSerialSelector();
         }
     }
 }

@@ -38,9 +38,6 @@
     <StartupObject>MissionControl.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArduinoDriver, Version=2.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArduinoDriver.2.4.6\lib\net452\ArduinoDriver.dll</HintPath>
-    </Reference>
     <Reference Include="ArduinoUploader, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ArduinoUploader.3.2.0\lib\net452\ArduinoUploader.dll</HintPath>
     </Reference>

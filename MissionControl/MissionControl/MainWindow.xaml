@@ -24,9 +24,12 @@
         <TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Height="23" Margin="268,163.375,0,0" TextWrapping="Wrap" Text="{Binding HigherValue, ElementName=LedPositionSlider}" VerticalAlignment="Top" Width="120"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Height="21" Margin="143,142.375,0,0" TextWrapping="Wrap" Text="Lower End" VerticalAlignment="Top" Width="80.5"/>
         <TextBlock x:Name="textBlock1_Copy" HorizontalAlignment="Left" Height="21" Margin="268,142.375,0,0" TextWrapping="Wrap" Text="Higher End" VerticalAlignment="Top" Width="80.5"/>
-        <Button x:Name="ChangeLed" Content="Set LEDs" HorizontalAlignment="Left" Height="42" Margin="657,142.375,0,0" VerticalAlignment="Top" Width="128" Click="ChangeLed_Click"/>
+        <Button x:Name="ChangeLed" Content="Set LEDs" HorizontalAlignment="Left" Height="44" Margin="657,142.375,0,0" VerticalAlignment="Top" Width="128" Click="ChangeLed_Click"/>
         <TextBox x:Name="HexBox" HorizontalAlignment="Left" Height="23" Margin="204.5,79,0,0" TextWrapping="Wrap" Text="#FFFFFF" VerticalAlignment="Top" Width="120"/>
         <TextBlock x:Name="textBlock1_Copy1" HorizontalAlignment="Left" Height="23" Margin="143,79,0,0" TextWrapping="Wrap" Text="Hex Color" VerticalAlignment="Top" Width="80.5"/>
+        <ComboBox x:Name="SerialPortSelector" HorizontalAlignment="Left" Height="21" Margin="532.5,165.375,0,0" VerticalAlignment="Top" Width="119.5"/>
+        <TextBlock x:Name="textBlock1_Copy2" HorizontalAlignment="Left" Height="21" Margin="532,144,0,0" TextWrapping="Wrap" Text="Serial Port" VerticalAlignment="Top" Width="58"/>
+        <Button x:Name="button" Content="Refresh" HorizontalAlignment="Left" Height="18" Margin="590,145,0,0" VerticalAlignment="Top" Width="62" Click="Button_Click"/>
 
     </Grid>
 </Window>
