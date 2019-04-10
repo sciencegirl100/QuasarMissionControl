@@ -1,13 +1,16 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO.Ports;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace MissionControl {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            RedSlider.Value = 127;
-            GreenSlider.Value = 127;
-            BlueSlider.Value = 127;
+            RedLabel.Text = "127";
+            GreenLabel.Text = "127";
+            BlueLabel.Text = "127";
             ColorChange();
             UpdateSerialSelector();
         }
@@ -18,57 +21,99 @@ namespace MissionControl {
          * - Set RGB TextBoxes to mirror sliders
          */
 
-        private void RedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+        private void RedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var color = (int)RedSlider.Value;
+            RedLabel.Text = color.ToString();
             ColorChange();
         }
 
         private void GreenSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+            GreenLabel.Text = GreenSlider.Value.ToString();
             ColorChange();
         }
 
         private void BlueSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+            BlueLabel.Text = BlueSlider.Value.ToString();
             ColorChange();
         }
 
         private void ColorChange() {
-            int red = (int)RedSlider.Value;
-            int green = (int)GreenSlider.Value;
-            int blue = (int)BlueSlider.Value;
+            var red = (int)RedSlider.Value;
+            var green = (int)GreenSlider.Value;
+            var blue = (int)BlueSlider.Value;
             ColorPreviewBox.Fill = new SolidColorBrush(Color.FromRgb((byte)red, (byte)green, (byte)blue));
         }
 
         private void ChangeLed_Click(object sender, RoutedEventArgs e) {
             // Set LEDs
-            int red = (int)RedSlider.Value;
-            int green = (int)GreenSlider.Value;
-            int blue = (int)BlueSlider.Value;
-            int lower = (int)LedPositionSlider.LowerValue;
-            int higher = (int)LedPositionSlider.HigherValue;
-            int LEDCount = 136;
+            var red = (int)RedSlider.Value;
+            var green = (int)GreenSlider.Value;
+            var blue = (int)BlueSlider.Value;
+            var LEDCount = 136;
             // Map Lower/higher range to ASCII byte
-            lower = Map(lower, 0, LEDCount, 0, 127);
-            higher = Map(higher, 0, LEDCount, 0, 127);
+            int lower = (int)((Double.Parse(lbox.Text) / (Double)LEDCount) * 127.0);
+            int higher = (int)((Double.Parse(lbox.Text) / (Double)LEDCount) * 127.0);
             // Create Serial Command as a String
             string SerialCommand = (char)(byte)red + "" + (char)(byte)green + "" + (char)(byte)blue + "" + (char)(byte)lower + "" + (char)(byte)higher + "\n";
-            // MessageBox.Show("Red: " + (char)(byte)red + "\n Green: " + (char)(byte)green + "\n Blue: " + (char)(byte)blue);
-            // MessageBox.Show(SerialCommand);
+            
+            // TODO: Fix Int -> Byte
 
-            // TODO: Pull from Selector Box and push to that serial port
-            // https://www.c-sharpcorner.com/UploadFile/eclipsed4utoo/communicating-with-serial-port-in-C-Sharp/
-            // https://docs.microsoft.com/en-us/dotnet/api/system.io.ports.serialport?view=netframework-4.7.2
-
+            if (SerialPortSelector.Text == "")
+            {
+                MessageBox.Show("You need to select a serial port.");
+            }
+            else
+            {
+                SerialPort Serial = new SerialPort(SerialPortSelector.Text, 115200, Parity.None, 8, StopBits.One);
+                Serial.Handshake = Handshake.None;
+                Serial.Open();
+                Serial.Write(SerialCommand);
+                Serial.Close();
+            }
         }
         private void UpdateSerialSelector() {
             // TODO: get list of serial ports and dump to combo-box
             // https://docs.microsoft.com/en-us/dotnet/api/system.io.ports.serialport.getportnames?view=netframework-4.7.2
-        }
-
-        private int Map(int value, int fromSource, int toSource, int fromTarget, int toTarget) {
-            return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
+            string[] SerialPorts = SerialPort.GetPortNames();
+            SerialPortSelector.Items.Clear();
+            foreach (var name in SerialPorts) {
+                SerialPortSelector.Items.Add(name);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
             UpdateSerialSelector();
+        }
+
+        private void RedLabel_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (RedLabel.Text == "") {
+                RedSlider.Value = 0.0;
+            } else {
+                RedSlider.Value = Int32.Parse(RedLabel.Text);
+            }
+            ColorChange();
+        }
+
+        private void GreenLabel_OnTextChanged(object sender, TextChangedEventArgs e) {
+            if (GreenLabel.Text == "")
+            {
+                GreenSlider.Value = 0.0;
+            }else
+            {
+                GreenSlider.Value = Int32.Parse(GreenLabel.Text);
+            }
+            ColorChange();
+        }
+
+        private void BlueLabel_OnTextChanged(object sender, TextChangedEventArgs e) {
+            if (BlueLabel.Text == "") {
+                BlueSlider.Value = 0.0;
+            } else {
+                BlueSlider.Value = Int32.Parse(BlueLabel.Text);
+            }
+            ColorChange();
         }
     }
 }
