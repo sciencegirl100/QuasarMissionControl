@@ -27,7 +27,7 @@ using System.Windows.Media;
 
 /* TODO:
  * - better sliders (make them dials somehow)
- * - use ini file for setting number of LEDs and last used serial port
+ * - use setting number of LEDs and last used serial port
  * - make a settings window popup
  */
 
@@ -38,10 +38,9 @@ namespace MissionControl {
             RedLabel.Text = "127";
             GreenLabel.Text = "127";
             BlueLabel.Text = "127";
+            LedPositionSlider.Maximum = MissionControl.Properties.Settings.Default.LedCount;
             ColorChange();
             UpdateSerialSelector();
-            // Temp...
-            SerialPortSelector.Text = "COM6";
         }
 
         private void RedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -87,6 +86,9 @@ namespace MissionControl {
             foreach (var name in SerialPorts) {
                 SerialPortSelector.Items.Add(name);
             }
+            if (SerialPorts.Contains(MissionControl.Properties.Settings.Default.LasetSerialPort)) {
+                SerialPortSelector.Text = MissionControl.Properties.Settings.Default.LasetSerialPort;
+            }
         }
 
         private void AutoSetLeds() {
@@ -98,7 +100,6 @@ namespace MissionControl {
                 uint red = (uint) RedSlider.Value;
                 uint green = (uint) GreenSlider.Value;
                 uint blue = (uint) BlueSlider.Value;
-                var LEDCount = 136;
                 // Map Lower/higher range to ASCII byte
                 uint lower = uint.Parse(lbox.Text);
                 uint higher = uint.Parse(hbox.Text);
@@ -121,7 +122,6 @@ namespace MissionControl {
             uint red = (uint)RedSlider.Value;
             uint green = (uint)GreenSlider.Value;
             uint blue = (uint)BlueSlider.Value;
-            var LEDCount = 136;
             // Map Lower/higher range to ASCII byte
             uint lower = uint.Parse(lbox.Text);
             uint higher = uint.Parse(hbox.Text);
@@ -209,6 +209,10 @@ namespace MissionControl {
             var LedsSelectedCount = LedPositionSlider.HigherValue - LedPositionSlider.LowerValue;
             totalLabel.Text = LedsSelectedCount.ToString();
             AutoSetLeds();
+        }
+
+        private void SerialPortSelector_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            MissionControl.Properties.Settings.Default.LasetSerialPort = SerialPortSelector.Text;
         }
     }
 }

@@ -46,7 +46,7 @@ limitations under the License.
         <TextBlock x:Name="textBlock1_Copy" HorizontalAlignment="Left" Height="21" Margin="228.5,142.375,0,0" TextWrapping="Wrap" Text="Higher End" VerticalAlignment="Top" Width="80.5"/>
         <Button x:Name="ChangeLed" Content="Set LEDs" HorizontalAlignment="Left" Height="44" Margin="527,137,0,0" VerticalAlignment="Top" Width="128" Click="ChangeLed_Click"/>
         <TextBlock x:Name="textBlock1_Copy1" HorizontalAlignment="Left" Height="23" Margin="143,79,0,0" TextWrapping="Wrap" Text="Hex Color" VerticalAlignment="Top" Width="80.5"/>
-        <ComboBox x:Name="SerialPortSelector" HorizontalAlignment="Left" Height="21" Margin="402,160,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="SerialPortSelector" HorizontalAlignment="Left" Height="21" Margin="402,160,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SerialPortSelector_SelectionChanged"/>
         <TextBlock x:Name="textBlock1_Copy2" HorizontalAlignment="Left" Height="21" Margin="402,138,0,0" TextWrapping="Wrap" Text="Serial Port" VerticalAlignment="Top" Width="58"/>
         <Button x:Name="button" Content="Refresh" HorizontalAlignment="Left" Height="18" Margin="460,139,0,0" VerticalAlignment="Top" Width="62" Click="Button_Click"/>
         <TextBlock x:Name="textBlock1_Copy3" HorizontalAlignment="Left" Height="21" Margin="314,143,0,0" TextWrapping="Wrap" Text="Total Selected" VerticalAlignment="Top" Width="80.5"/>
