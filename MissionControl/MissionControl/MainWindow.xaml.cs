@@ -1,10 +1,35 @@
-﻿using System;
+﻿// Mission Control for Quasar LED system
+// "MainWindow.xaml.cs"
+// Author: Edward J. Green
+/*
+Copyright 2019 Edward J. Green
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+using System;
 using System.IO.Ports;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+/* TODO:
+ * - better sliders (make them dials somehow)
+ * - use ini file for setting number of LEDs and last used serial port
+ * - make a settings window popup
+ */
 
 namespace MissionControl {
     public partial class MainWindow : Window {
@@ -19,30 +44,24 @@ namespace MissionControl {
             SerialPortSelector.Text = "COM6";
         }
 
-        /* TODO:
-         * - Set HexBox to current-set RGB  (ColorChange)
-         * - On HexBox change, update RGB sliders
-         * - Set RGB TextBoxes to mirror sliders
-         */
-
         private void RedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             var color = (int)RedSlider.Value;
             RedLabel.Text = color.ToString();
             ColorChange();
-            SetLeds();
+            AutoSetLeds();
         }
 
         private void GreenSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
             GreenLabel.Text = GreenSlider.Value.ToString();
             ColorChange();
-            SetLeds();
+            AutoSetLeds();
         }
 
         private void BlueSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
             BlueLabel.Text = BlueSlider.Value.ToString();
             ColorChange();
-            SetLeds();
+            AutoSetLeds();
         }
 
         private void ColorChange() {
@@ -50,6 +69,7 @@ namespace MissionControl {
             var green = (int)GreenSlider.Value;
             var blue = (int)BlueSlider.Value;
             ColorPreviewBox.Fill = new SolidColorBrush(Color.FromRgb((byte)red, (byte)green, (byte)blue));
+            HexBox.Text = "#" + red.ToString("X") + green.ToString("X") + blue.ToString("X");
         }
 
         private void ChangeLed_Click(object sender, RoutedEventArgs e) {
@@ -69,6 +89,33 @@ namespace MissionControl {
             }
         }
 
+        private void AutoSetLeds() {
+            // Set LEDs
+            if (AutoUpdateLeds == null) {
+                return;
+            }
+            if (AutoUpdateLeds.IsChecked == true) {
+                uint red = (uint) RedSlider.Value;
+                uint green = (uint) GreenSlider.Value;
+                uint blue = (uint) BlueSlider.Value;
+                var LEDCount = 136;
+                // Map Lower/higher range to ASCII byte
+                uint lower = uint.Parse(lbox.Text);
+                uint higher = uint.Parse(hbox.Text);
+                // Create Serial Command as a String
+                string serialCommand = red + "," + green + "," + blue + "," + lower + "," + higher + "\n";
+                if (SerialPortSelector.Text == "") {
+                    //MessageBox.Show("You need to select a serial port.");
+                } else {
+                    SerialPort Serial = new SerialPort(SerialPortSelector.Text, 115200, Parity.None, 8, StopBits.One);
+                    Serial.Handshake = Handshake.None;
+                    Serial.Open();
+                    Serial.Write(serialCommand);
+                    Serial.Close();
+                }
+            }
+        }
+
         private void SetLeds() {
             // Set LEDs
             uint red = (uint)RedSlider.Value;
@@ -79,14 +126,14 @@ namespace MissionControl {
             uint lower = uint.Parse(lbox.Text);
             uint higher = uint.Parse(hbox.Text);
             // Create Serial Command as a String
-            string SerialCommand = red + "," + green + "," + blue + "," + lower + "," + higher + "\n";
+            string serialCommand = red + "," + green + "," + blue + "," + lower + "," + higher + "\n";
             if (SerialPortSelector.Text == "") {
-                //MessageBox.Show("You need to select a serial port.");
+                return;
             } else {
                 SerialPort Serial = new SerialPort(SerialPortSelector.Text, 115200, Parity.None, 8, StopBits.One);
                 Serial.Handshake = Handshake.None;
                 Serial.Open();
-                Serial.Write(SerialCommand);
+                Serial.Write(serialCommand);
                 Serial.Close();
             }
         }
@@ -95,8 +142,7 @@ namespace MissionControl {
             UpdateSerialSelector();
         }
 
-        private void RedLabel_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
+        private void RedLabel_OnTextChanged(object sender, TextChangedEventArgs e) {
             if (RedLabel.Text == "" || !RedLabel.Text.All(char.IsDigit) ) {
                 RedSlider.Value = 0.0;
             } else {
@@ -106,11 +152,9 @@ namespace MissionControl {
         }
 
         private void GreenLabel_OnTextChanged(object sender, TextChangedEventArgs e) {
-            if (GreenLabel.Text == "" || !GreenLabel.Text.All(char.IsDigit) )
-            {
+            if (GreenLabel.Text == "" || !GreenLabel.Text.All(char.IsDigit) ) {
                 GreenSlider.Value = 0.0;
-            }else
-            {
+            } else {
                 GreenSlider.Value = Int32.Parse(GreenLabel.Text);
             }
             ColorChange();
@@ -156,6 +200,7 @@ namespace MissionControl {
                 GreenSlider.Value = green;
                 BlueSlider.Value = blue;
                 ColorChange();
+                AutoSetLeds();
             }
 
         }
@@ -163,6 +208,7 @@ namespace MissionControl {
         private void LedPositionSlider_RangeValueChanged(object sender, RoutedEventArgs e) {
             var LedsSelectedCount = LedPositionSlider.HigherValue - LedPositionSlider.LowerValue;
             totalLabel.Text = LedsSelectedCount.ToString();
+            AutoSetLeds();
         }
     }
 }
