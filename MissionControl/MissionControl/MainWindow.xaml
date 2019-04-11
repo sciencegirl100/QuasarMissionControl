@@ -9,7 +9,7 @@
         Title="MainWindow" Height="258.5" Width="800">
     <Grid>
 
-        <xctk:RangeSlider x:Name="LedPositionSlider" HorizontalAlignment="Left" Margin="143,112.375,0,0" VerticalAlignment="Top" Width="639" Maximum="136" IsSnapToTickEnabled="True" TickPlacement="TopLeft"/>
+        <xctk:RangeSlider x:Name="LedPositionSlider" HorizontalAlignment="Left" Margin="143,112.375,0,0" VerticalAlignment="Top" Width="639" Maximum="136" IsSnapToTickEnabled="True" TickPlacement="TopLeft" Minimum="1" LowerValueChanged="LedPositionSlider_RangeValueChanged" HigherValueChanged="LedPositionSlider_RangeValueChanged"/>
         <Slider x:Name="RedSlider" HorizontalAlignment="Left" Margin="74,10,0,0" VerticalAlignment="Top" Width="644" Background="Red" Maximum="255" AutomationProperties.Name="RedSlider" SmallChange="1" IsSnapToTickEnabled="True" ValueChanged="RedSlider_ValueChanged"/>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="18" Margin="10,10,0,0" TextWrapping="Wrap" Text="Red" VerticalAlignment="Top" Width="59"/>
         <TextBox x:Name="RedLabel" HorizontalAlignment="Left" Height="18" Margin="723,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="59" TextChanged="RedLabel_OnTextChanged"/>
@@ -20,16 +20,18 @@
         <TextBlock x:Name="textBlock_Copy3" HorizontalAlignment="Left" Height="18" Margin="10,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="59"><Run Text="Blue"/><LineBreak/><Run/></TextBlock>
         <TextBox x:Name="BlueLabel" HorizontalAlignment="Left" Height="18" Margin="723,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="59" TextChanged="BlueLabel_OnTextChanged"/>
         <Rectangle x:Name="ColorPreviewBox" Fill="#FF7F7F7F" HorizontalAlignment="Left" Height="128" Margin="10,79,0,0" Stroke="Black" VerticalAlignment="Top" Width="128"/>
-        <TextBox x:Name="lbox" HorizontalAlignment="Left" Height="23" Margin="143,163.375,0,0" TextWrapping="Wrap" Text="{Binding LowerValue, ElementName=LedPositionSlider}" VerticalAlignment="Top" Width="120" IsManipulationEnabled="True"/>
-        <TextBox x:Name="hbox" HorizontalAlignment="Left" Height="23" Margin="268,163.375,0,0" TextWrapping="Wrap" Text="{Binding HigherValue, ElementName=LedPositionSlider}" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="lbox" HorizontalAlignment="Left" Height="23" Margin="143,163.375,0,0" TextWrapping="Wrap" Text="{Binding LowerValue, ElementName=LedPositionSlider}" VerticalAlignment="Top" Width="80.5" IsManipulationEnabled="True"/>
+        <TextBox x:Name="hbox" HorizontalAlignment="Left" Height="23" Margin="228.5,163.375,0,0" TextWrapping="Wrap" Text="{Binding HigherValue, ElementName=LedPositionSlider}" VerticalAlignment="Top" Width="80.5"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Height="21" Margin="143,142.375,0,0" TextWrapping="Wrap" Text="Lower End" VerticalAlignment="Top" Width="80.5"/>
-        <TextBlock x:Name="textBlock1_Copy" HorizontalAlignment="Left" Height="21" Margin="268,142.375,0,0" TextWrapping="Wrap" Text="Higher End" VerticalAlignment="Top" Width="80.5"/>
+        <TextBlock x:Name="textBlock1_Copy" HorizontalAlignment="Left" Height="21" Margin="228.5,142.375,0,0" TextWrapping="Wrap" Text="Higher End" VerticalAlignment="Top" Width="80.5"/>
         <Button x:Name="ChangeLed" Content="Set LEDs" HorizontalAlignment="Left" Height="44" Margin="651,141,0,0" VerticalAlignment="Top" Width="128" Click="ChangeLed_Click"/>
-        <TextBox x:Name="HexBox" HorizontalAlignment="Left" Height="23" Margin="204.5,79,0,0" TextWrapping="Wrap" Text="#FFFFFF" VerticalAlignment="Top" Width="120"/>
         <TextBlock x:Name="textBlock1_Copy1" HorizontalAlignment="Left" Height="23" Margin="143,79,0,0" TextWrapping="Wrap" Text="Hex Color" VerticalAlignment="Top" Width="80.5"/>
         <ComboBox x:Name="SerialPortSelector" HorizontalAlignment="Left" Height="21" Margin="526,164,0,0" VerticalAlignment="Top" Width="120"/>
         <TextBlock x:Name="textBlock1_Copy2" HorizontalAlignment="Left" Height="21" Margin="526,142,0,0" TextWrapping="Wrap" Text="Serial Port" VerticalAlignment="Top" Width="58"/>
         <Button x:Name="button" Content="Refresh" HorizontalAlignment="Left" Height="18" Margin="584,143,0,0" VerticalAlignment="Top" Width="62" Click="Button_Click"/>
+        <TextBlock x:Name="textBlock1_Copy3" HorizontalAlignment="Left" Height="21" Margin="314,143,0,0" TextWrapping="Wrap" Text="Total Selected" VerticalAlignment="Top" Width="80.5"/>
+        <TextBlock x:Name="totalLabel" HorizontalAlignment="Left" Height="21" Margin="314,164.375,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="80.5"/>
+        <TextBox x:Name="HexBox" HorizontalAlignment="Left" Height="23" Margin="204.5,79,0,0" TextWrapping="Wrap" Text="#FFFFFF" VerticalAlignment="Top" Width="120" TextChanged="HexBox_OnTextChanged"/>
 
     </Grid>
 </Window>
