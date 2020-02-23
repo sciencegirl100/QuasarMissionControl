@@ -1,4 +1,4 @@
-/* USB Serial NeoPixel Control System (Name Tentative)
+/* Quasar
  *  I have chosen to use the FastLED Library available:
  *    Here: https://github.com/FastLED/FastLED
  *    Or in the Library Manager of the Arduino IDE
@@ -9,13 +9,17 @@
  *  "rgbse" Red byte, Green byte, Blue byte, Start byte, end byte
 */
 
-#include <FastLED.h>
+#include <Arduino.h>
+#include "FastLED.h"
 #include "settings.h"
 
 CRGB strip[LED_COUNT];
 String inputString = "";
 bool stringComplete = false;
 char command[6];
+String getValue(String data, int index);
+void serialEvent();
+void clearStrip();
 
 void setup() {
   // This is setup to use the cheap WS2812 strips.
@@ -23,6 +27,7 @@ void setup() {
   FastLED.addLeds<WS2812, PIN, BRG>(strip, LED_COUNT);
   Serial.begin(BAUDRATE);
   inputString.reserve(200);
+  clearStrip();
 }
 
 void loop() {
@@ -50,8 +55,6 @@ void loop() {
 }
 
 String getValue(String data, int index) {
-  // This is from :
-  // https://arduino.stackexchange.com/a/1237
   int found = 0;
   int strIndex[] = { 0, -1 };
   int maxIndex = data.length() - 1;
@@ -73,5 +76,11 @@ void serialEvent() {
     if (inChar == '\n') {
       stringComplete = true;
     }
+  }
+}
+
+void clearStrip(){
+  for (int i = 0; i < LED_COUNT+1; i++){
+     strip[i].setRGB(0, 0, 0);
   }
 }
